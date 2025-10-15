@@ -89,6 +89,15 @@ COOKIE_SECURE=false
 | POST | `/api/auth/refresh` | Refresh access token | ❌ |
 | POST | `/api/auth/logout` | Logout user | ❌ |
 
+### Profile
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| GET | `/api/profile` | Get user profile | ✅ |
+| PUT | `/api/profile` | Update user profile | ✅ |
+| PUT | `/api/profile/change-password` | Change password | ✅ |
+| DELETE | `/api/profile/delete-account` | Delete user account | ✅ |
+
 ### Tasks
 
 | Method | Endpoint | Description | Auth Required |

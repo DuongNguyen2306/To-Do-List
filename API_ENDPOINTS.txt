@@ -1,0 +1,240 @@
+# ToDoList API Endpoints
+# Base URL: https://to-do-list-vsb8.onrender.com
+
+## 🔐 AUTHENTICATION APIs
+
+### Register User
+POST https://to-do-list-vsb8.onrender.com/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john@example.com", 
+  "password": "password123"
+}
+
+### Login User
+POST https://to-do-list-vsb8.onrender.com/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+
+### Refresh Token
+POST https://to-do-list-vsb8.onrender.com/api/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "your_refresh_token_here"
+}
+
+### Logout User
+POST https://to-do-list-vsb8.onrender.com/api/auth/logout
+Content-Type: application/json
+
+{
+  "refreshToken": "your_refresh_token_here"
+}
+
+## 👤 PROFILE APIs
+
+### Get User Profile
+GET https://to-do-list-vsb8.onrender.com/api/profile
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+### Update User Profile
+PUT https://to-do-list-vsb8.onrender.com/api/profile
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+{
+  "name": "Updated Name",
+  "avatarUrl": "https://example.com/new-avatar.jpg"
+}
+
+### Change Password
+PUT https://to-do-list-vsb8.onrender.com/api/profile/change-password
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+{
+  "currentPassword": "oldpassword123",
+  "newPassword": "newpassword123"
+}
+
+### Delete User Account
+DELETE https://to-do-list-vsb8.onrender.com/api/profile/delete-account
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+{
+  "password": "password123"
+}
+
+## 📝 TASK APIs
+
+### Get All Tasks
+GET https://to-do-list-vsb8.onrender.com/api/tasks
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+Query Parameters:
+- q: search query (optional)
+- status: filter by status (optional)
+- project: filter by project (optional)
+- page: page number (default: 1)
+- limit: items per page (default: 100)
+
+### Create New Task
+POST https://to-do-list-vsb8.onrender.com/api/tasks
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+{
+  "title": "Complete project documentation",
+  "description": "Write comprehensive API documentation",
+  "status": "To do",
+  "priority": "high",
+  "project": "API Development",
+  "tags": ["documentation", "api", "backend"],
+  "dueDate": "2024-12-31T23:59:59.000Z",
+  "reminderAt": "2024-12-30T09:00:00.000Z"
+}
+
+### Update Task
+PUT https://to-do-list-vsb8.onrender.com/api/tasks/:id
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+{
+  "title": "Updated task title",
+  "description": "Updated task description",
+  "status": "In progress",
+  "priority": "medium",
+  "project": "Updated Project",
+  "tags": ["updated", "task"],
+  "dueDate": "2024-12-31T23:59:59.000Z"
+}
+
+### Delete Task (Soft Delete/Archive)
+DELETE https://to-do-list-vsb8.onrender.com/api/tasks/:id
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+### Hard Delete Task (Permanent Delete)
+DELETE https://to-do-list-vsb8.onrender.com/api/tasks/:id/hard
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+### Restore Archived Task
+POST https://to-do-list-vsb8.onrender.com/api/tasks/:id/restore
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+### Batch Sync Tasks
+POST https://to-do-list-vsb8.onrender.com/api/tasks/sync
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+{
+  "operations": [
+    {
+      "op": "create",
+      "clientOpId": "op1",
+      "clientId": "client_task_1",
+      "task": {
+        "title": "New task",
+        "description": "Task description"
+      }
+    },
+    {
+      "op": "update",
+      "clientOpId": "op2",
+      "task": {
+        "_id": "507f1f77bcf86cd799439011",
+        "title": "Updated task"
+      }
+    }
+  ]
+}
+
+## 🔍 SYSTEM APIs
+
+### Health Check
+GET https://to-do-list-vsb8.onrender.com/health
+
+### API Status
+GET https://to-do-list-vsb8.onrender.com/
+
+### Swagger Documentation
+GET https://to-do-list-vsb8.onrender.com/api-docs
+
+## 📊 TASK STATUS OPTIONS
+- "To do"
+- "In progress" 
+- "On approval"
+- "Done"
+
+## 🏷️ PRIORITY OPTIONS
+- "low"
+- "medium"
+- "high"
+
+## 🔑 AUTHENTICATION FLOW
+
+1. Register/Login to get accessToken
+2. Store token in localStorage/sessionStorage
+3. Include token in Authorization header: "Bearer YOUR_JWT_TOKEN"
+4. Use refresh endpoint when token expires
+
+## 📝 EXAMPLE FRONTEND INTEGRATION
+
+```javascript
+// Base URL
+const API_BASE_URL = 'https://to-do-list-vsb8.onrender.com';
+
+// Authentication
+const login = async (email, password) => {
+  const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+  return response.json();
+};
+
+// Get Tasks
+const getTasks = async (token) => {
+  const response = await fetch(`${API_BASE_URL}/api/tasks`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  return response.json();
+};
+
+// Create Task
+const createTask = async (token, taskData) => {
+  const response = await fetch(`${API_BASE_URL}/api/tasks`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(taskData)
+  });
+  return response.json();
+};
+```
+
+## 🚨 IMPORTANT NOTES
+
+- All task endpoints require authentication (JWT token)
+- Include "Authorization: Bearer YOUR_JWT_TOKEN" header
+- Use HTTPS for all requests
+- Handle errors appropriately (400, 401, 404, 500)
+- Refresh token when access token expires

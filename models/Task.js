@@ -15,6 +15,8 @@ const taskSchema = new mongoose.Schema({
   dueDate: { type: Date, default: null },
   reminderAt: { type: Date, default: null },
   isArchived: { type: Boolean, default: false },
+  // Reference to monthly goal if this task is generated from a monthly goal
+  monthlyGoalId: { type: mongoose.Schema.Types.ObjectId, ref: 'MonthlyGoal', default: null },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

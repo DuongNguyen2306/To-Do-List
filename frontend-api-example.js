@@ -362,6 +362,158 @@ export const deleteAccount = async (token, password) => {
 };
 
 // ===========================================
+// 🎯 MONTHLY GOALS FUNCTIONS
+// ===========================================
+
+// Create monthly goal
+export const createMonthlyGoal = async (token, goalData) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/monthly-goals`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(goalData)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Create monthly goal error:', error);
+    throw error;
+  }
+};
+
+// Get all monthly goals
+export const getMonthlyGoals = async (token, filters = {}) => {
+  try {
+    const queryParams = new URLSearchParams();
+    
+    if (filters.status) queryParams.append('status', filters.status);
+    if (filters.month) queryParams.append('month', filters.month);
+    if (filters.year) queryParams.append('year', filters.year);
+    
+    const url = `${API_BASE_URL}/api/monthly-goals${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Get monthly goals error:', error);
+    throw error;
+  }
+};
+
+// Get monthly goal details
+export const getMonthlyGoal = async (token, goalId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/monthly-goals/${goalId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Get monthly goal error:', error);
+    throw error;
+  }
+};
+
+// Update monthly goal
+export const updateMonthlyGoal = async (token, goalId, goalData) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/monthly-goals/${goalId}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(goalData)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Update monthly goal error:', error);
+    throw error;
+  }
+};
+
+// Delete monthly goal
+export const deleteMonthlyGoal = async (token, goalId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/monthly-goals/${goalId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Delete monthly goal error:', error);
+    throw error;
+  }
+};
+
+// Get progress report
+export const getProgressReport = async (token, month, year) => {
+  try {
+    const queryParams = new URLSearchParams();
+    if (month) queryParams.append('month', month);
+    if (year) queryParams.append('year', year);
+    
+    const url = `${API_BASE_URL}/api/monthly-goals/progress/report${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Get progress report error:', error);
+    throw error;
+  }
+};
+
+// ===========================================
 // 🔧 UTILITY FUNCTIONS
 // ===========================================
 
@@ -475,6 +627,49 @@ export const profileManagement = async (token) => {
     return { profile, updatedProfile, passwordResult };
   } catch (error) {
     console.error('Profile management error:', error);
+    throw error;
+  }
+};
+
+// Example: Monthly Goals management
+export const monthlyGoalsManagement = async (token) => {
+  try {
+    // Create monthly goal
+    const newGoal = await createMonthlyGoal(token, {
+      title: 'Tập gym mỗi ngày',
+      description: 'Tập gym để giữ sức khỏe',
+      dailyTime: '06:00',
+      timezone: 'Asia/Ho_Chi_Minh',
+      repeatConfig: {
+        weekdays: [1, 2, 3, 4, 5], // Thứ 2-6
+        includeWeekends: false
+      }
+    });
+    console.log('Created monthly goal:', newGoal);
+    
+    // Get all monthly goals
+    const goals = await getMonthlyGoals(token);
+    console.log('All monthly goals:', goals);
+    
+    // Get goal details
+    const goalDetails = await getMonthlyGoal(token, newGoal.goal._id);
+    console.log('Goal details:', goalDetails);
+    
+    // Update goal
+    const updatedGoal = await updateMonthlyGoal(token, newGoal.goal._id, {
+      title: 'Tập gym mỗi ngày - Updated',
+      dailyTime: '07:00',
+      status: 'active'
+    });
+    console.log('Updated goal:', updatedGoal);
+    
+    // Get progress report
+    const progressReport = await getProgressReport(token, 10, 2024);
+    console.log('Progress report:', progressReport);
+    
+    return { newGoal, goals, goalDetails, updatedGoal, progressReport };
+  } catch (error) {
+    console.error('Monthly goals management error:', error);
     throw error;
   }
 };

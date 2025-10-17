@@ -7,6 +7,7 @@ const swaggerUi = require('swagger-ui-express');
 
 const connectDB = require('./config/db');
 const swaggerSpecs = require('./config/swagger');
+const { initializeCronJobs } = require('./jobs/cronJobs');
 
 const app = express();
 
@@ -20,6 +21,9 @@ app.use(morgan('dev'));
 
 connectDB();
 
+// Initialize cron jobs
+initializeCronJobs();
+
 app.get('/', (req, res) => res.send('✅ ToDoList API is running'));
 
 // Swagger UI
@@ -31,6 +35,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs, {
 app.use('/api/auth', require('./routers/auth'));
 app.use('/api/tasks', require('./routers/tasks'));
 app.use('/api/profile', require('./routers/profile'));
+app.use('/api/monthly-goals', require('./routers/monthlyGoals'));
 
 // health
 app.get('/health', (req, res) => res.json({ ok: true }));

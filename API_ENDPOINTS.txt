@@ -74,6 +74,70 @@ Content-Type: application/json
   "password": "password123"
 }
 
+## 🎯 MONTHLY GOALS APIs
+
+### Create Monthly Goal
+POST https://to-do-list-vsb8.onrender.com/api/monthly-goals
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+{
+  "title": "Tập gym mỗi ngày",
+  "description": "Tập gym để giữ sức khỏe",
+  "dailyTime": "06:00",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "repeatConfig": {
+    "weekdays": [1, 2, 3, 4, 5],
+    "includeWeekends": false
+  }
+}
+
+### Get All Monthly Goals
+GET https://to-do-list-vsb8.onrender.com/api/monthly-goals
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+Query Parameters:
+- status: filter by status (active, paused, completed, cancelled)
+- month: filter by month (1-12)
+- year: filter by year
+
+### Get Monthly Goal Details
+GET https://to-do-list-vsb8.onrender.com/api/monthly-goals/:id
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+### Update Monthly Goal
+PUT https://to-do-list-vsb8.onrender.com/api/monthly-goals/:id
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+{
+  "title": "Updated goal title",
+  "description": "Updated description",
+  "dailyTime": "07:00",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "repeatConfig": {
+    "weekdays": [1, 2, 3, 4, 5, 6, 0],
+    "includeWeekends": true
+  },
+  "status": "active"
+}
+
+### Delete Monthly Goal
+DELETE https://to-do-list-vsb8.onrender.com/api/monthly-goals/:id
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+### Get Progress Report
+GET https://to-do-list-vsb8.onrender.com/api/monthly-goals/progress/report
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+Query Parameters:
+- month: month (1-12)
+- year: year
+
 ## 📝 TASK APIs
 
 ### Get All Tasks

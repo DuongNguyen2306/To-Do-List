@@ -250,6 +250,102 @@ const options = {
               }
             }
           }
+        },
+        MonthlyGoal: {
+          type: 'object',
+          properties: {
+            _id: {
+              type: 'string',
+              description: 'Monthly goal ID'
+            },
+            userId: {
+              type: 'string',
+              description: 'User ID who owns the goal'
+            },
+            title: {
+              type: 'string',
+              maxLength: 255,
+              description: 'Goal title'
+            },
+            description: {
+              type: 'string',
+              description: 'Goal description'
+            },
+            dailyTime: {
+              type: 'string',
+              pattern: '^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$',
+              description: 'Daily time in HH:MM format'
+            },
+            startDate: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Goal start date'
+            },
+            endDate: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Goal end date'
+            },
+            timezone: {
+              type: 'string',
+              description: 'User timezone'
+            },
+            status: {
+              type: 'string',
+              enum: ['active', 'paused', 'completed', 'cancelled'],
+              description: 'Goal status'
+            },
+            repeatConfig: {
+              type: 'object',
+              properties: {
+                weekdays: {
+                  type: 'array',
+                  items: {
+                    type: 'integer',
+                    minimum: 0,
+                    maximum: 6
+                  },
+                  description: 'Days of week (0=Sunday, 6=Saturday)'
+                },
+                includeWeekends: {
+                  type: 'boolean',
+                  description: 'Include weekends'
+                }
+              }
+            },
+            stats: {
+              type: 'object',
+              properties: {
+                completedDays: {
+                  type: 'integer',
+                  description: 'Number of completed days'
+                },
+                totalDays: {
+                  type: 'integer',
+                  description: 'Total days in current month'
+                },
+                completionRate: {
+                  type: 'integer',
+                  description: 'Completion rate percentage'
+                },
+                lastStatsUpdate: {
+                  type: 'string',
+                  format: 'date-time',
+                  description: 'Last stats update time'
+                }
+              }
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Goal creation date'
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Goal last update date'
+            }
+          }
         }
       }
     },
@@ -259,7 +355,7 @@ const options = {
       }
     ]
   },
-  apis: ['./routers/*.js', './controllers/*.js']
+    apis: ['./routers/*.js', './controllers/*.js', './models/*.js']
 };
 
 const specs = swaggerJsdoc(options);

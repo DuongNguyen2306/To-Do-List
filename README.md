@@ -98,6 +98,17 @@ COOKIE_SECURE=false
 | PUT | `/api/profile/change-password` | Change password | ✅ |
 | DELETE | `/api/profile/delete-account` | Delete user account | ✅ |
 
+### Monthly Goals
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| POST | `/api/monthly-goals` | Create monthly goal | ✅ |
+| GET | `/api/monthly-goals` | Get all monthly goals | ✅ |
+| GET | `/api/monthly-goals/:id` | Get monthly goal details | ✅ |
+| PUT | `/api/monthly-goals/:id` | Update monthly goal | ✅ |
+| DELETE | `/api/monthly-goals/:id` | Delete monthly goal | ✅ |
+| GET | `/api/monthly-goals/progress/report` | Get progress report | ✅ |
+
 ### Tasks
 
 | Method | Endpoint | Description | Auth Required |

@@ -138,7 +138,84 @@ Query Parameters:
 - month: month (1-12)
 - year: year
 
-## 📝 TASK APIs
+## 📝 NOTES APIs
+
+### Create Note
+POST https://to-do-list-vsb8.onrender.com/api/notes
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+{
+  "title": "Useful Links",
+  "content": "Check out this link: https://example.com",
+  "tags": ["links", "resources", "web"],
+  "category": "Web Development",
+  "color": "#FF5733",
+  "isPinned": false
+}
+
+### Get All Notes
+GET https://to-do-list-vsb8.onrender.com/api/notes
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+Query Parameters:
+- category: filter by category
+- tag: filter by tag
+- search: search in title, content, tags
+- isPinned: filter by pinned status (true/false)
+- isArchived: filter by archived status (true/false)
+- page: page number (default: 1)
+- limit: items per page (default: 50)
+- sortBy: sort field (createdAt, updatedAt, title)
+- sortOrder: sort order (asc, desc)
+
+### Get Note Details
+GET https://to-do-list-vsb8.onrender.com/api/notes/:id
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+### Update Note
+PUT https://to-do-list-vsb8.onrender.com/api/notes/:id
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+{
+  "title": "Updated title",
+  "content": "Updated content with link: https://example.com",
+  "tags": ["updated", "links"],
+  "category": "Updated Category",
+  "color": "#33FF57",
+  "isPinned": true,
+  "isArchived": false
+}
+
+### Delete Note
+DELETE https://to-do-list-vsb8.onrender.com/api/notes/:id
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+### Get All Categories
+GET https://to-do-list-vsb8.onrender.com/api/notes/categories/list
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+### Get All Tags
+GET https://to-do-list-vsb8.onrender.com/api/notes/tags/list
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+### Archive/Unarchive Note
+POST https://to-do-list-vsb8.onrender.com/api/notes/:id/archive
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+### Pin/Unpin Note
+POST https://to-do-list-vsb8.onrender.com/api/notes/:id/pin
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+## 📋 TASK APIs
 
 ### Get All Tasks
 GET https://to-do-list-vsb8.onrender.com/api/tasks

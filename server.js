@@ -36,6 +36,7 @@ app.use('/api/auth', require('./routers/auth'));
 app.use('/api/tasks', require('./routers/tasks'));
 app.use('/api/profile', require('./routers/profile'));
 app.use('/api/monthly-goals', require('./routers/monthlyGoals'));
+app.use('/api/notes', require('./routers/notes'));
 
 // health
 app.get('/health', (req, res) => res.json({ ok: true }));

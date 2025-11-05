@@ -346,6 +346,64 @@ const options = {
               description: 'Goal last update date'
             }
           }
+        },
+        Note: {
+          type: 'object',
+          properties: {
+            _id: {
+              type: 'string',
+              description: 'Note ID'
+            },
+            userId: {
+              type: 'string',
+              description: 'User ID who owns the note'
+            },
+            title: {
+              type: 'string',
+              maxLength: 255,
+              description: 'Note title'
+            },
+            content: {
+              type: 'string',
+              description: 'Note content (can contain text and links)'
+            },
+            tags: {
+              type: 'array',
+              items: {
+                type: 'string'
+              },
+              description: 'Tags for categorization'
+            },
+            category: {
+              type: 'string',
+              description: 'Category name'
+            },
+            isPinned: {
+              type: 'boolean',
+              default: false,
+              description: 'Whether note is pinned'
+            },
+            isArchived: {
+              type: 'boolean',
+              default: false,
+              description: 'Whether note is archived'
+            },
+            color: {
+              type: 'string',
+              pattern: '^#[0-9A-Fa-f]{6}$',
+              description: 'Note color in hex format'
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Note creation date'
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Note last update date'
+            }
+          }
         }
       }
     },

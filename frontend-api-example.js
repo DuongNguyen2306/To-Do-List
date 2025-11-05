@@ -514,6 +514,220 @@ export const getProgressReport = async (token, month, year) => {
 };
 
 // ===========================================
+// 📝 NOTES FUNCTIONS
+// ===========================================
+
+// Create note
+export const createNote = async (token, noteData) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/notes`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(noteData)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Create note error:', error);
+    throw error;
+  }
+};
+
+// Get all notes
+export const getNotes = async (token, filters = {}) => {
+  try {
+    const queryParams = new URLSearchParams();
+    
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        queryParams.append(key, value);
+      }
+    });
+    
+    const url = `${API_BASE_URL}/api/notes${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Get notes error:', error);
+    throw error;
+  }
+};
+
+// Get note details
+export const getNote = async (token, noteId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/notes/${noteId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Get note error:', error);
+    throw error;
+  }
+};
+
+// Update note
+export const updateNote = async (token, noteId, noteData) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/notes/${noteId}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(noteData)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Update note error:', error);
+    throw error;
+  }
+};
+
+// Delete note
+export const deleteNote = async (token, noteId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/notes/${noteId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Delete note error:', error);
+    throw error;
+  }
+};
+
+// Get all categories
+export const getCategories = async (token) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/notes/categories/list`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Get categories error:', error);
+    throw error;
+  }
+};
+
+// Get all tags
+export const getTags = async (token) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/notes/tags/list`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Get tags error:', error);
+    throw error;
+  }
+};
+
+// Archive/Unarchive note
+export const toggleArchive = async (token, noteId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/notes/${noteId}/archive`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Toggle archive error:', error);
+    throw error;
+  }
+};
+
+// Pin/Unpin note
+export const togglePin = async (token, noteId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/notes/${noteId}/pin`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Toggle pin error:', error);
+    throw error;
+  }
+};
+
+// ===========================================
 // 🔧 UTILITY FUNCTIONS
 // ===========================================
 
@@ -670,6 +884,68 @@ export const monthlyGoalsManagement = async (token) => {
     return { newGoal, goals, goalDetails, updatedGoal, progressReport };
   } catch (error) {
     console.error('Monthly goals management error:', error);
+    throw error;
+  }
+};
+
+// Example: Notes management
+export const notesManagement = async (token) => {
+  try {
+    // Create note
+    const newNote = await createNote(token, {
+      title: 'Useful Links',
+      content: 'Check out these links:\n- https://reactjs.org\n- https://nodejs.org',
+      tags: ['links', 'resources', 'web'],
+      category: 'Web Development',
+      color: '#FF5733',
+      isPinned: false
+    });
+    console.log('Created note:', newNote);
+    
+    // Get all notes
+    const notes = await getNotes(token, {
+      category: 'Web Development',
+      page: 1,
+      limit: 20
+    });
+    console.log('All notes:', notes);
+    
+    // Search notes
+    const searchResults = await getNotes(token, {
+      search: 'react',
+      page: 1,
+      limit: 10
+    });
+    console.log('Search results:', searchResults);
+    
+    // Get note details
+    const noteDetails = await getNote(token, newNote.note._id);
+    console.log('Note details:', noteDetails);
+    console.log('Extracted links:', noteDetails.links);
+    
+    // Update note
+    const updatedNote = await updateNote(token, newNote.note._id, {
+      title: 'Updated Useful Links',
+      content: 'Updated content with more links',
+      isPinned: true
+    });
+    console.log('Updated note:', updatedNote);
+    
+    // Pin note
+    const pinnedNote = await togglePin(token, newNote.note._id);
+    console.log('Pinned note:', pinnedNote);
+    
+    // Get categories
+    const categories = await getCategories(token);
+    console.log('Categories:', categories);
+    
+    // Get tags
+    const tags = await getTags(token);
+    console.log('Tags:', tags);
+    
+    return { newNote, notes, searchResults, noteDetails, updatedNote, categories, tags };
+  } catch (error) {
+    console.error('Notes management error:', error);
     throw error;
   }
 };

@@ -109,6 +109,20 @@ COOKIE_SECURE=false
 | DELETE | `/api/monthly-goals/:id` | Delete monthly goal | ✅ |
 | GET | `/api/monthly-goals/progress/report` | Get progress report | ✅ |
 
+### Notes
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| POST | `/api/notes` | Create note | ✅ |
+| GET | `/api/notes` | Get all notes | ✅ |
+| GET | `/api/notes/:id` | Get note details | ✅ |
+| PUT | `/api/notes/:id` | Update note | ✅ |
+| DELETE | `/api/notes/:id` | Delete note | ✅ |
+| GET | `/api/notes/categories/list` | Get all categories | ✅ |
+| GET | `/api/notes/tags/list` | Get all tags | ✅ |
+| POST | `/api/notes/:id/archive` | Archive/unarchive note | ✅ |
+| POST | `/api/notes/:id/pin` | Pin/unpin note | ✅ |
+
 ### Tasks
 
 | Method | Endpoint | Description | Auth Required |
